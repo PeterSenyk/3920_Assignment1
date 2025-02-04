@@ -26,6 +26,8 @@ const db = mysql.createConnection({
     multipleStatements: true
 });
 
+app.use(express.static("V1_Unsafe"));
+
 db.connect((err) => {
     if (err) throw err;
     console.log("Connected to MySQL (Unsafe Version)");
