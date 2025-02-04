@@ -113,7 +113,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
 // Members Page
 app.get("/members", (req, res) => {
