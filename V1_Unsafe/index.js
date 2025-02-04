@@ -15,7 +15,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// MySQL Connection (Still vulnerable to SQL Injection)
+// MySQL Connection
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
     `);
 });
 
-// Signup Page (GET)
+// Signup Page
 app.get("/signup", (req, res) => {
     res.send(`
         <h1>Sign Up</h1>
@@ -52,7 +52,7 @@ app.get("/signup", (req, res) => {
     `);
 });
 
-// Unsafe Signup (SQL Injection Works, but Hashing is Enabled)
+// Unsafe Signup
 app.post("/signup", async (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -71,7 +71,7 @@ app.post("/signup", async (req, res) => {
     });
 });
 
-// Login Page (GET)
+// Login Page
 app.get("/login", (req, res) => {
     res.send(`
         <h1>Log In</h1>
@@ -84,7 +84,7 @@ app.get("/login", (req, res) => {
     `);
 });
 
-// Unsafe Login (SQL Injection Works)
+// Unsafe Login
 app.post("/login", (req, res) => {
     let { username, password } = req.body;
 
