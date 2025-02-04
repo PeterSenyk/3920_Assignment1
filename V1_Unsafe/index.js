@@ -113,7 +113,9 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.use(express.static(__dirname + "/public"));
+const path = require("path");
+app.use(express.static(path.join(__dirname, "../public")));
+
 
 // Members Page
 app.get("/members", (req, res) => {
