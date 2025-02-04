@@ -15,7 +15,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// MySQL Connection (Still vulnerable to SQL Injection)
+// MySQL Connection
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
     `);
 });
 
-// Signup Page (GET)
+// Signup Page
 app.get("/signup", (req, res) => {
     res.send(`
         <h1>Sign Up</h1>
@@ -72,7 +72,7 @@ app.post("/signup", async (req, res) => {
     });
 });
 
-// Login Page (GET)
+// Login Page
 app.get("/login", (req, res) => {
     res.send(`
         <h1>Log In</h1>
@@ -85,7 +85,7 @@ app.get("/login", (req, res) => {
     `);
 });
 
-// Safe Login (SQL Injection Works)
+// Safe Login
 app.post("/login", (req, res) => {
     let { username, password } = req.body;
 
@@ -139,7 +139,7 @@ app.get("/logout", (req, res) => {
     req.session.destroy(() => res.redirect("/"));
 });
 
-// 404 Page (MUST BE LAST)
+// 404 Page
 app.use((req, res) => {
     res.status(404).send("<h1>404 - Page Not Found</h1>");
 });
