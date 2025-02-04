@@ -26,8 +26,6 @@ const db = mysql.createConnection({
     multipleStatements: true
 });
 
-app.use(express.static("V1_Unsafe"));
-
 db.connect((err) => {
     if (err) throw err;
     console.log("Connected to MySQL (Unsafe Version)");
@@ -115,6 +113,7 @@ app.post("/login", (req, res) => {
     });
 });
 
+app.use(express.static("public"));
 
 // Members Page
 app.get("/members", (req, res) => {
@@ -127,6 +126,7 @@ app.get("/members", (req, res) => {
     <img src="/${randomImage}" alt="random image" style="width: 300px; height: 300px;"><br>
     <a href="/logout">Logout</a>`);
 });
+
 
 // Logout
 app.get("/logout", (req, res) => {
