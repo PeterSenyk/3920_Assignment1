@@ -121,7 +121,7 @@ app.post("/login", (req, res) => {
 app.get("/members", (req, res) => {
     if (!req.session.username) return res.redirect("/");
 
-    const images = ["public/image1.jpeg", "public/image1.jpeg", "public/image1.jpeg"];
+    const images = ["image1.jpeg", "image1.jpeg", "image1.jpeg"];
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
     res.send(`<h1>Welcome, ${req.session.username}</h1>
@@ -141,4 +141,4 @@ app.use((req, res) => {
 
 
 // Start Server
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+app.listen(3000, () => console.log("Server running"));
