@@ -20,7 +20,8 @@ const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
 });
 
 db.connect((err) => {
@@ -123,7 +124,7 @@ app.get("/members", (req, res) => {
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
     res.send(`<h1>Welcome, ${req.session.username}</h1>
-    <img src="/${randomImage}" style="width: 300px; height: 300px;"><br>
+    <img src="/${randomImage}" alt="random image" style="width: 300px; height: 300px;"><br>
     <a href="/logout">Logout</a>`);
 });
 
