@@ -22,7 +22,8 @@ const db = mysql.createConnection({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     port: Number(process.env.DB_PORT),
-    connectTimeout: 20000
+    connectTimeout: 20000,
+    multipleStatements: true
 });
 
 db.connect((err) => {
@@ -87,14 +88,9 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
     let { username, password } = req.body;
 
-    // Prevent empty username errors
-    if (!username || username.trim() === "") {
-        return res.send("Error: Username cannot be empty.");
-    }
-
-    // SQL Injection Allowed (No Prepared Statements)
+    // Allow SQL injection (NO escaping of single quotes)
     console.log("Raw User Input:", username);
-    const query = `SELECT * FROM users WHERE username = '${username}'`;
+    const query = `SELECT * FROM users WHERE username = '${username}'`; // Unsafe query
     console.log("Executing SQL Query:", query);
 
     db.query(query, async (err, results) => {
@@ -117,11 +113,12 @@ app.post("/login", (req, res) => {
     });
 });
 
+
 // Members Page
 app.get("/members", (req, res) => {
     if (!req.session.username) return res.redirect("/");
 
-    const images = ["image1.jpeg", "image1.jpeg", "image1.jpeg"];
+    const images = ["image1.jpeg", "image2.jpeg", "image3.jpeg"];
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
     res.send(`<h1>Welcome, ${req.session.username}</h1>
