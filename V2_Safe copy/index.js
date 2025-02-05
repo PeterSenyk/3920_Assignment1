@@ -35,7 +35,7 @@ db.connect((err) => {
 // Home Page
 app.get("/", (req, res) => {
     res.send(`
-        <h1>Home</h1>
+        <h1>Home V2_Safe</h1>
         <a href="/signup">Sign Up</a> | <a href="/login">Log In</a>
     `);
 });
@@ -53,24 +53,32 @@ app.get("/signup", (req, res) => {
     `);
 });
 
-// Unsafe Signup (SQL Injection Works, but Hashing is Enabled)
+// Safe Signup
 app.post("/signup", async (req, res) => {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    const query = `INSERT INTO users (username, password) VALUES ('${username}', '${hashedPassword}')`;
+        const query = "INSERT INTO users (username, password) VALUES (?, ?)";
 
-    db.query(query, (err) => {
-        if (err) {
-            if (err.code === "ER_DUP_ENTRY") {
-                return res.send("Error: Username already exists. Choose another.");
+        db.query(query, [username, hashedPassword], (err) => {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    return res.send("Error: Username already exists. Choose another.");
+                }
+                console.error("SQL Error:", err);
+                return res.send(`SQL Error: ${err.sqlMessage}`);
             }
-            throw err;
-        }
-        req.session.username = username;
-        res.redirect("/members");
-    });
+            req.session.username = username;
+            res.redirect("/members");
+        });
+
+    } catch (error) {
+        console.error("Signup Error:", error);
+        res.send("Internal server error. Please try again.");
+    }
 });
+
 
 // Login Page
 app.get("/login", (req, res) => {

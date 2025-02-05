@@ -34,7 +34,7 @@ db.connect((err) => {
 // Home Page
 app.get("/", (req, res) => {
     res.send(`
-        <h1>Home</h1>
+        <h1>Home V1_Unsafe</h1>
         <a href="/signup">Sign Up</a> | <a href="/login">Log In</a>
     `);
 });
